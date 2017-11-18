@@ -13,14 +13,20 @@ void putc(int i, int j, char c) {
 
 void set() {
 	for (int i = 0; i < 80*25*2; i+=2) {
-		__put_vga_byte((void*)i, '0');
+		__put_vga_byte((void*)i, '\0');
 	}
 }
 
 void outb(void* addr, u16 data) {
-	
+
 }
+
 
 void bootmain(){
 	set();
+
+	for (int i = 0; i < 25; i++) {
+		putc(i,i,'o');
+	}
+
 }

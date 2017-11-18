@@ -20,9 +20,6 @@ _start:
 	mov %ax, %gs
 	mov %ax, %fs
 
-	mov $0b10, %ax
-	bsfl %ax, %dx
-
 	calll bootmain
 
 
@@ -41,6 +38,48 @@ __put_vga_byte:
 	mov %bl, %es:(%eax)
 	
 	pop %ebx
+	leavel
+	retl
+
+.global __read_disk_to
+.type __read_disk_to @function
+__read_disk_to:
+	pushl %ebp
+	movl %esp, %ebp
+
+
+
+	leavel
+	retl
+
+.global __cp_mem
+.type __cp_mem @function
+#ds:si -> es:di
+#@ds  +0x08(ebp)
+#@si  +0x0c(ebp)
+#@es  +0x10(ebp)
+#@di  +0x14(ebp)
+__copy_mem:
+	pushl %ebp
+	movl %esp, %ebp
+
+	push %ds
+	push %si
+	push %es
+	push %di
+	movw 0x08(%ebp), %ax
+	movw %ax, %ds
+	movw 0x0c(%ebp), %ax
+	movw %ax, %si
+	movw 0x10(%ebp), %ax
+	movw %ax, %es
+	movw 0x14(%ebp), %ax
+	movw %ax, %di
+	pop %di
+	pop %es
+	pop %si
+	pop %ds
+
 	leavel
 	retl
 
